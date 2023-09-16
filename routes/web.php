@@ -14,5 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if(auth()->user()){
+        return view('app');
+    }
+    // Guest -> Static Index Page
+    return view('pages.index'); 
 });
+
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+
+Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/{any?}', function(){
+        return view('app');
+    });
+});
+
